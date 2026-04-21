@@ -1,5 +1,4 @@
 "use client";
-
 import { authClient } from "@/lib/auth-client";
 import { Check } from "@gravity-ui/icons";
 import {
@@ -12,24 +11,22 @@ import {
   TextField,
 } from "@heroui/react";
 
-
-
-const SignUpPage = () => {
+const SignInPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     const userData = Object.fromEntries(formData.entries());
-  
 
-    const { data, error } = await authClient.signUp.email({
-      name: userData.name,
+    const { data, error } = await authClient.signIn.email({
       email: userData.email, // required
       password: userData.password, // required
+      rememberMe: true,
+      callbackURL: "/",
     });
 
-    console.log( "userData",userData);
-    console.log( "sign up responsive",data , error);
+    console.log("userData", userData);
+    console.log("sign up responsive", data, error);
 
     // const data = {};
     // // Convert FormData to plain object
@@ -38,25 +35,10 @@ const SignUpPage = () => {
     // });
     // alert(`Form submitted with: ${JSON.stringify(data, null, 2)}`);
   };
-
   return (
     <div className="container mx-auto my-20 flex flex-col justify-center items-center">
-      <h1>this is sign up page</h1>
+      <h1>this is sign in page</h1>
       <Form className="flex w-96 flex-col gap-4" onSubmit={onSubmit}>
-        <TextField
-          isRequired
-          name="name"
-          validate={(value) => {
-            if (value.length < 3) {
-              return "Name must be at least 3 characters";
-            }
-            return null;
-          }}
-        >
-          <Label>Name</Label>
-          <Input name="name" placeholder="Enter your name" />
-          <FieldError />
-        </TextField>
         <TextField
           isRequired
           name="email"
@@ -111,4 +93,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
